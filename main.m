@@ -194,8 +194,11 @@ for evt = 1 : size(EP.Data,1)
                 
             end
             
-            PsychPortAudio('Fillbuffer', Playback_pahandle, [ActionAction.signal'; ActionAction.signal']);
-            PsychPortAudio('Start', Playback_pahandle, 1, startTime +  EP.Data{evt+1,2} - ActionAction.duration - 0.001 , 1);
+            % there is no 'action' block after the last 'rest' block
+            if ~strcmp(EP.Data{evt+1,1},'StopTime')
+                PsychPortAudio('Fillbuffer', Playback_pahandle, [ActionAction.signal'; ActionAction.signal']);
+                PsychPortAudio('Start', Playback_pahandle, 1, startTime +  EP.Data{evt+1,2} - ActionAction.duration - 0.001 , 1);
+            end
             
         case 'action'
             
